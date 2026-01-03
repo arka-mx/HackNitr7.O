@@ -209,6 +209,33 @@ const BillCheck = () => {
                                 )}
                             </motion.button>
                         </div>
+
+                        {/* Denial Check Bridge */}
+                        <div className="col-span-full mt-6">
+                            <motion.div
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.5 }}
+                                className="bg-indigo-50 border border-indigo-100 rounded-xl p-4 flex items-center justify-between"
+                            >
+                                <div className="flex items-center gap-3">
+                                    <div className="bg-indigo-100 p-2 rounded-lg text-indigo-600">
+                                        <Scale className="w-5 h-5" />
+                                    </div>
+                                    <div>
+                                        <h3 className="font-bold text-indigo-900 text-sm">Has this bill been denied by insurance?</h3>
+                                        <p className="text-indigo-600 text-xs">Don't just check for errors—fight back against bad faith denials.</p>
+                                    </div>
+                                </div>
+                                <Button
+                                    onClick={() => navigate('/policy-trigger')}
+                                    size="sm"
+                                    className="bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg shadow-sm"
+                                >
+                                    Check Denial <ArrowRight className="w-4 h-4 ml-1" />
+                                </Button>
+                            </motion.div>
+                        </div>
                     </motion.div>
                 )}
 
