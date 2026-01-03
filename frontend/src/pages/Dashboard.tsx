@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import { FileText, CheckCircle, AlertCircle, Loader2, LogOut } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from "@/context/AuthContext";
@@ -17,10 +19,10 @@ const Dashboard = () => {
 
     const handleLogout = async () => {
         try {
-            
+
             navigate("/landing");
             await logout();
-            
+
         } catch (error) {
             console.error("Error signing out:", error);
         }
@@ -188,9 +190,12 @@ const Dashboard = () => {
                                 <h2 className="text-2xl font-bold text-slate-900">Analysis Report</h2>
                             </div>
                             <div className="prose prose-slate max-w-none">
-                                <pre className="whitespace-pre-wrap font-sans text-slate-700 leading-relaxed">
+                                <ReactMarkdown
+                                    remarkPlugins={[remarkGfm]}
+                                    // className="prose prose-slate max-w-none prose-headings:text-slate-900 prose-p:text-slate-700 prose-strong:text-slate-900 prose-ul:text-slate-700 prose-ol:text-slate-700"
+                                >
                                     {analysisResult}
-                                </pre>
+                                </ReactMarkdown>
                             </div>
                         </motion.div>
                     )}

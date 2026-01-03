@@ -1,6 +1,7 @@
 import fs from 'fs';
-import { PDFParse } from 'pdf-parse';
-// import pdf from 'pdf-parse';
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+const pdf = require('pdf-parse');
 import axios from 'axios';
 
 const SYSTEM_PROMPT = `
@@ -145,12 +146,12 @@ After completing billing analysis, perform a separate insurance suitability revi
 -----------------------
 TONE & COMMUNICATION
 -----------------------
-
 - Clear, calm, and professional
 - No legal threats
 - No emotional language
 - No assumptions of intent
 - Prioritize clarity, conservatism, and trust
+- Always provide a markdown formatted response - give a proper formatted response with proper headers and subheaders, whitespaces, line breaks, underlines, bullet points, even if some contrasting colors if needed , bold,etc.
 
 Your goal is to help the user understand:
 - How much they were billed
@@ -158,14 +159,23 @@ Your goal is to help the user understand:
 - How much they may realistically recover
 - What to do next
 
+
 If no meaningful issues are found, explicitly state that the documents appear internally consistent, summarize the financial review performed, and explain what was checked.
 `;
 
 const extractText = async (file) => {
     if (file.mimetype === 'application/pdf') {
-        const dataBuffer = file.buffer;
-        const data = await PDFParse(dataBuffer);
-        return data.text;
+        try {
+            const dataBuffer = file.buffer;
+            // Convert Buffer to Uint8Array as required by PDFParse class
+            const uint8Array = new Uint8Array(dataBuffer);
+            const parser = new pdf.PDFParse(uint8Array);
+            const data = await parser.load();
+            return data.text;
+        } catch (error) {
+            console.error("Error parsing PDF:", error);
+            throw new Error(`Failed to parse PDF: ${file.originalname}`);
+        }
     } else if (file.mimetype.startsWith('text/')) {
         return file.buffer.toString('utf8');
     } else {
