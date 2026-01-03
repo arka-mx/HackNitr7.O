@@ -1,6 +1,6 @@
 import express from 'express';
 import multer from 'multer';
-import { analyzeMedicalData } from '../controllers/analyzeController.js';
+import { analyzeMedicalData, analyzePolicyCheck } from '../controllers/analyzeController.js';
 
 const router = express.Router();
 
@@ -12,5 +12,11 @@ router.post('/upload', upload.fields([
     { name: 'hospitalBill', maxCount: 1 },
     { name: 'insurancePolicy', maxCount: 1 }
 ]), analyzeMedicalData);
+
+router.post('/policy-check', upload.fields([
+    { name: 'policyFile', maxCount: 1 },
+    { name: 'medicalDocs', maxCount: 5 },
+    { name: 'denialDocs', maxCount: 5 }
+]), analyzePolicyCheck);
 
 export default router;
