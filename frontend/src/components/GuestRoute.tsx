@@ -5,7 +5,7 @@ export default function GuestRoute({ children }: { children: React.ReactNode }) 
     const { currentUser } = useAuth();
 
     if (currentUser) {
-        return <Navigate to="/landing" replace />;
+        return <Navigate to="/dashboard" replace />;
     }
 
     return <>{children}</>;

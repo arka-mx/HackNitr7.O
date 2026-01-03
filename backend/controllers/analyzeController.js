@@ -1,5 +1,6 @@
 import fs from 'fs';
-
+import { PDFParse } from 'pdf-parse';
+// import pdf from 'pdf-parse';
 import axios from 'axios';
 
 const SYSTEM_PROMPT = `
@@ -163,7 +164,7 @@ If no meaningful issues are found, explicitly state that the documents appear in
 const extractText = async (file) => {
     if (file.mimetype === 'application/pdf') {
         const dataBuffer = file.buffer;
-        const data = await pdf(dataBuffer);
+        const data = await PDFParse(dataBuffer);
         return data.text;
     } else if (file.mimetype.startsWith('text/')) {
         return file.buffer.toString('utf8');

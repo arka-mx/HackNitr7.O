@@ -1,6 +1,9 @@
 import { useState } from 'react';
-import { Upload, FileText, CheckCircle, AlertCircle, Loader2 } from 'lucide-react';
+import { FileText, CheckCircle, AlertCircle, Loader2, LogOut } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useAuth } from "@/context/AuthContext";
+import { useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
 
 const Dashboard = () => {
     const [hospitalBill, setHospitalBill] = useState<File | null>(null);
@@ -8,6 +11,20 @@ const Dashboard = () => {
     const [isAnalyzing, setIsAnalyzing] = useState(false);
     const [analysisResult, setAnalysisResult] = useState<string | null>(null);
     const [error, setError] = useState<string | null>(null);
+
+    const { logout, currentUser } = useAuth();
+    const navigate = useNavigate();
+
+    const handleLogout = async () => {
+        try {
+            
+            navigate("/landing");
+            await logout();
+            
+        } catch (error) {
+            console.error("Error signing out:", error);
+        }
+    };
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, type: 'bill' | 'policy') => {
         if (e.target.files && e.target.files[0]) {
@@ -53,24 +70,44 @@ const Dashboard = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gray-900 text-white relative overflow-hidden font-sans selection:bg-orange-500/30">
-            {/* Background Gradients */}
-            <div className="absolute top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
-                <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-orange-500/20 rounded-full blur-[120px]" />
-                <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-blue-600/20 rounded-full blur-[120px]" />
-            </div>
+        <div className="min-h-screen bg-[#FDFDFD] font-sans text-slate-800 selection:bg-teal-100">
 
-            <div className="container mx-auto px-6 py-12 max-w-6xl">
+            {/* Header */}
+            <header className="container mx-auto flex items-center justify-between py-6 px-4 md:px-6 mb-8 border-b border-slate-100">
+                <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate('/landing')}>
+                    <div className="h-8 w-8 bg-teal-700 rounded-md flex items-center justify-center text-white font-bold text-xl">
+                        O
+                    </div>
+                    <span className="text-2xl font-bold tracking-tight text-slate-900">Overbilled</span>
+                </div>
+
+                <div className="flex items-center gap-4">
+                    <span className="text-sm font-medium hidden md:inline-block text-slate-600">
+                        {currentUser?.displayName || currentUser?.email}
+                    </span>
+                    <Button
+                        variant="ghost"
+                        onClick={handleLogout}
+                        className="text-slate-600 hover:text-red-600 hover:bg-red-50"
+                    >
+                        <LogOut className="w-4 h-4 mr-2" />
+                        Logout
+                    </Button>
+                </div>
+            </header>
+
+            <div className="container mx-auto px-6 max-w-6xl pb-20">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     className="mb-12 text-center"
                 >
-                    <h1 className="text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-orange-400 to-orange-100 mb-4">
+                    <h1 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4">
                         Medical Bill Analysis
                     </h1>
-                    <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-                        Upload your hospital bills and insurance policy to get AI-powered insights on potential savings and coverage errors.
+                    <p className="text-slate-600 text-lg max-w-2xl mx-auto">
+                        Upload your hospital bills and insurance policy. <br />
+                        <span className="text-teal-700 font-medium">Identify overcharges and save money.</span>
                     </p>
                 </motion.div>
 
@@ -82,7 +119,8 @@ const Dashboard = () => {
                         file={hospitalBill}
                         onChange={(e) => handleFileChange(e, 'bill')}
                         accept=".pdf,.jpg,.png,.jpeg"
-                        icon={<FileText className="w-8 h-8 text-orange-400" />}
+                        icon={<FileText className="w-8 h-8 text-teal-600" />}
+                        activeColor="teal"
                     />
 
                     {/* Insurance Policy Upload */}
@@ -92,7 +130,8 @@ const Dashboard = () => {
                         file={insurancePolicy}
                         onChange={(e) => handleFileChange(e, 'policy')}
                         accept=".pdf,.jpg,.png,.jpeg"
-                        icon={<CheckCircle className="w-8 h-8 text-blue-400" />}
+                        icon={<CheckCircle className="w-8 h-8 text-purple-600" />}
+                        activeColor="purple"
                     />
                 </div>
 
@@ -103,10 +142,10 @@ const Dashboard = () => {
                         onClick={handleAnalyze}
                         disabled={isAnalyzing}
                         className={`
-                        px-8 py-4 rounded-xl text-lg font-semibold shadow-lg transition-all
+                        px-8 py-4 rounded-full text-lg font-semibold shadow-lg transition-all
                         ${isAnalyzing
-                                ? 'bg-gray-700 cursor-not-allowed text-gray-400'
-                                : 'bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-400 hover:to-orange-500 text-white shadow-orange-500/25'}
+                                ? 'bg-slate-200 cursor-not-allowed text-slate-400'
+                                : 'bg-teal-700 hover:bg-teal-800 text-white shadow-teal-700/20'}
                         flex items-center gap-3
                     `}
                     >
@@ -129,7 +168,7 @@ const Dashboard = () => {
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0 }}
-                            className="bg-red-500/10 border border-red-500/20 text-red-200 p-4 rounded-xl mb-8 flex items-center gap-3 max-w-2xl mx-auto"
+                            className="bg-red-50 border border-red-100 text-red-600 p-4 rounded-xl mb-8 flex items-center gap-3 max-w-2xl mx-auto"
                         >
                             <AlertCircle className="w-6 h-6" />
                             {error}
@@ -140,16 +179,16 @@ const Dashboard = () => {
                         <motion.div
                             initial={{ opacity: 0, y: 40 }}
                             animate={{ opacity: 1, y: 0 }}
-                            className="bg-gray-800/50 backdrop-blur-xl border border-gray-700/50 rounded-2xl p-8 shadow-2xl"
+                            className="bg-white border border-slate-200 rounded-2xl p-8 shadow-xl"
                         >
-                            <div className="flex items-center gap-4 mb-6 border-b border-gray-700 pb-4">
-                                <div className="p-3 bg-green-500/20 rounded-lg">
-                                    <CheckCircle className="w-6 h-6 text-green-400" />
+                            <div className="flex items-center gap-4 mb-6 border-b border-slate-100 pb-4">
+                                <div className="p-3 bg-teal-50 rounded-lg">
+                                    <CheckCircle className="w-6 h-6 text-teal-600" />
                                 </div>
-                                <h2 className="text-2xl font-bold text-white">Analysis Report</h2>
+                                <h2 className="text-2xl font-bold text-slate-900">Analysis Report</h2>
                             </div>
-                            <div className="prose prose-invert max-w-none">
-                                <pre className="whitespace-pre-wrap font-sans text-gray-300 leading-relaxed">
+                            <div className="prose prose-slate max-w-none">
+                                <pre className="whitespace-pre-wrap font-sans text-slate-700 leading-relaxed">
                                     {analysisResult}
                                 </pre>
                             </div>
@@ -161,36 +200,32 @@ const Dashboard = () => {
     );
 };
 
-const UploadCard = ({ title, description, file, onChange, accept, icon }: {
+const UploadCard = ({ title, description, file, onChange, accept, icon, activeColor }: {
     title: string,
     description: string,
     file: File | null,
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void,
     accept: string,
-    icon: React.ReactNode
+    icon: React.ReactNode,
+    activeColor: 'teal' | 'purple'
 }) => (
     <motion.div
         whileHover={{ y: -5 }}
         className="relative group cursor-pointer"
     >
         <div className={`
-            absolute inset-0 bg-gradient-to-r from-gray-700/50 to-gray-800/50 rounded-2xl blur-xl transition-all duration-300
-            ${file ? 'opacity-100 from-green-500/10 to-blue-500/10' : 'opacity-0 group-hover:opacity-100'}
-        `} />
-
-        <div className={`
-            relative h-full bg-gray-800/40 backdrop-blur-md border border-gray-700/50 rounded-2xl p-8 text-center transition-all
-            hover:border-orange-500/30 hover:bg-gray-800/60
-            ${file ? 'border-green-500/30' : ''}
+            relative h-full bg-[#F4F7F6] border-2 border-transparent rounded-[2rem] p-8 text-center transition-all
+            hover:border-${activeColor}-200 hover:bg-white hover:shadow-lg
+            ${file ? `border-${activeColor}-500/50 bg-${activeColor}-50/30` : ''}
         `}>
             <div className="mb-6 flex justify-center">
-                <div className="p-4 bg-gray-700/50 rounded-full group-hover:scale-110 transition-transform duration-300">
+                <div className="p-4 bg-white rounded-full shadow-sm group-hover:scale-110 transition-transform duration-300">
                     {icon}
                 </div>
             </div>
 
-            <h3 className="text-xl font-bold text-white mb-2">{title}</h3>
-            <p className="text-gray-400 mb-6 text-sm">{description}</p>
+            <h3 className="text-xl font-bold text-slate-900 mb-2">{title}</h3>
+            <p className="text-slate-500 mb-6 text-sm">{description}</p>
 
             <div className="relative">
                 <input
@@ -200,10 +235,10 @@ const UploadCard = ({ title, description, file, onChange, accept, icon }: {
                     className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
                 />
                 <div className={`
-                    py-3 px-4 rounded-lg font-medium text-sm transition-colors
+                    py-3 px-4 rounded-xl font-medium text-sm transition-colors border
                     ${file
-                        ? 'bg-green-500/20 text-green-300 border border-green-500/30'
-                        : 'bg-gray-700 text-gray-300 group-hover:bg-gray-600'}
+                        ? `bg-white text-${activeColor}-700 border-${activeColor}-200 shadow-sm`
+                        : 'bg-white text-slate-600 border-slate-200 group-hover:bg-slate-50'}
                 `}>
                     {file ? file.name : 'Choose File'}
                 </div>
