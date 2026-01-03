@@ -34,7 +34,7 @@ const Dashboard = () => {
             icon: <Wand2 className="w-8 h-8 text-blue-600" />,
             color: 'blue',
             path: '/bill-simplifier',
-            status: 'Beta'
+            status: 'Active'
         },
         {
             id: 'necessity-detector',

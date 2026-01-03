@@ -1,16 +1,18 @@
 import express from 'express';
 import multer from 'multer';
 import { analyzeMedicalData } from '../controllers/analyzeController.js';
+import { simplifyBill } from '../controllers/simplifyController.js';
 
 const router = express.Router();
+const upload = multer({ storage: multer.memoryStorage() });
 
-// Configure multer for memory storage
-const storage = multer.memoryStorage();
-const upload = multer({ storage: storage });
-
-router.post('/upload', upload.fields([
+router.post('/analyze', upload.fields([
     { name: 'hospitalBill', maxCount: 1 },
     { name: 'insurancePolicy', maxCount: 1 }
 ]), analyzeMedicalData);
+
+router.post('/simplify', upload.fields([
+    { name: 'hospitalBill', maxCount: 1 }
+]), simplifyBill);
 
 export default router;
