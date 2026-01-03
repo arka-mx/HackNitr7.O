@@ -52,7 +52,7 @@ const Dashboard = () => {
             icon: <BookOpenCheck className="w-8 h-8 text-indigo-600" />,
             color: 'indigo',
             path: '/policy-trigger',
-            status: 'Live'
+            status: 'Active'
         },
         {
             id: 'cost-meter',
