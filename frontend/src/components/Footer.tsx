@@ -8,10 +8,7 @@ export default function Footer() {
                     {/* Brand Section */}
                     <div className="col-span-1 md:col-span-1">
                         <div className="flex items-center gap-2 mb-4">
-                            <div className="h-8 w-8 bg-teal-600 rounded-md flex items-center justify-center text-white font-bold text-xl">
-                                O
-                            </div>
-                            <span className="text-2xl font-bold tracking-tight text-white">Overbilled</span>
+                            <img src="/logo.jpg" alt="Overbilled Logo" className="h-10 w-auto" />
                         </div>
                         <p className="text-slate-400 text-sm leading-relaxed mb-6">
                             Empowering patients to fight back against medical overcharging.
