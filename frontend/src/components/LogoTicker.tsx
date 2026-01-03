@@ -31,7 +31,7 @@ export default function LogoTicker() {
 
                 gsap.to(tickerRef.current, {
                     x: -totalWidth,
-                    duration: 40,
+                    duration: 80,
                     ease: "none",
                     repeat: -1,
                 });
