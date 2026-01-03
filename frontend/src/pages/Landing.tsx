@@ -1,6 +1,7 @@
 import { useAuth } from "@/context/AuthContext";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
+import Footer from "@/components/Footer";
 
 export default function Landing() {
     const { logout, currentUser } = useAuth();
@@ -19,10 +20,7 @@ export default function Landing() {
             {/* Header */}
             <header className="container mx-auto flex items-center justify-between py-6 px-4 md:px-6">
                 <div className="flex items-center gap-2">
-                    <div className="h-8 w-8 bg-teal-700 rounded-md flex items-center justify-center text-white font-bold text-xl">
-                        O
-                    </div>
-                    <span className="text-2xl font-bold tracking-tight">Overbilled</span>
+                    <img src="/logo.jpg" alt="Overbilled Logo" className="h-10 w-auto" />
                 </div>
 
                 <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-600">
@@ -134,18 +132,8 @@ export default function Landing() {
             </main>
 
             {/* Footer/About Placeholder */}
-            <div className="container mx-auto px-4 md:px-6 py-8 mt-4 md:mt-8">
-                <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-                    <Button variant="secondary" className="rounded-full px-6 bg-slate-100 hover:bg-slate-200 text-slate-600">
-                        About Us
-                    </Button>
-
-                    <p className="text-xl md:text-2xl text-slate-800 max-w-2xl text-center md:text-right font-medium">
-                        We provide comprehensive <span className="text-teal-700">bill analysis</span> to help you
-                        save money on <span className="text-teal-700">Medical & Auto expenses</span>.
-                    </p>
-                </div>
-            </div>
+            {/* Footer */}
+            <Footer />
         </div>
     );
 }

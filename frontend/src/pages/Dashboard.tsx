@@ -89,10 +89,7 @@ const Dashboard = () => {
             {/* Header */}
             <header className="container mx-auto flex items-center justify-between py-6 px-4 md:px-6 mb-8 border-b border-slate-100">
                 <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate('/landing')}>
-                    <div className="h-8 w-8 bg-teal-700 rounded-md flex items-center justify-center text-white font-bold text-xl">
-                        O
-                    </div>
-                    <span className="text-2xl font-bold tracking-tight text-slate-900">Overbilled</span>
+                    <img src="/logo.jpg" alt="Overbilled Logo" className="h-10 w-auto" />
                 </div>
 
                 <div className="flex items-center gap-4">
