@@ -44,7 +44,7 @@ export function SignupForm({
             if (response.ok) {
                 // Direct Signup Success - Login and Redirect
                 login(data.token, data.user);
-                navigate("/landing");
+                navigate("/dashboard");
             } else {
                 setErrorMessage(data.error || "Signup failed");
             }
@@ -72,7 +72,7 @@ export function SignupForm({
 
             if (response.ok) {
                 await response.json();
-                navigate("/landing");
+                navigate("/dashboard");
             } else {
                 const errorData = await response.json();
                 console.error("Backend verification failed:", errorData);

@@ -44,7 +44,7 @@ export function LoginForm({
 
       if (response.ok) {
         login(data.token, data.user);
-        navigate("/landing");
+        navigate("/dashboard");
       } else {
         setErrorMessage(data.error || "Login failed");
       }
@@ -73,7 +73,7 @@ export function LoginForm({
 
       if (response.ok) {
         await response.json();
-        navigate("/landing");
+        navigate("/dashboard");
       } else {
         const errorData = await response.json();
         console.error("Backend verification failed:", errorData);

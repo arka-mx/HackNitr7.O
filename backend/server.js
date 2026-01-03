@@ -4,6 +4,7 @@ import cors from 'cors';
 // The routes use the middleware which uses the config.
 
 import authRoutes from './routes/authRoutes.js';
+import analyzeRoutes from './routes/analyzeRoutes.js';
 import connectDB from './config/db.js';
 
 const app = express();
@@ -16,6 +17,7 @@ app.use(express.json());
 
 // Routes
 app.use('/api', authRoutes);
+app.use('/api/analyze', analyzeRoutes);
 
 app.get('/', (req, res) => {
     res.send('Backend is running!');
