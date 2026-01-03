@@ -491,8 +491,8 @@ const UploadCard = ({ title, description, file, onChange, accept, icon, activeCo
                     accept={accept}
                     className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
                 />
-                <div className={`
-                    py-3 px-4 rounded-xl font-medium text-sm transition-colors border max-w-[200px] mx-auto
+                <div className={`overflow-hidden
+                    py-3 rounded-xl font-medium text-sm transition-colors border max-w-[200px] mx-auto
                     ${file
                         ? `bg-white text-${activeColor}-700 border-${activeColor}-200 shadow-sm`
                         : 'bg-white text-slate-600 border-slate-200 group-hover:bg-slate-50'}

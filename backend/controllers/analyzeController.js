@@ -32,6 +32,7 @@ The JSON structure must be exactly as follows:
 1. **summary**: Fill these fields with the best estimated numbers found or calculated. If a number is not found, use "$0.00" or "N/A".
 2. **detailed_report**: This string will be rendered as Markdown. It should contain the full explanation, itemized errors, and next steps. Do NOT include the financial summary table in this markdown string, as it will be displayed separately.
 3. **Strict JSON**: Your entire response must be parseable JSON. Do not add conversational text outside the JSON block.
+4. **Dont use emojis**
 `;
 
 const extractText = async (file) => {

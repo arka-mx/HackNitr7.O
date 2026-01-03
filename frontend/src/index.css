@@ -1,4 +1,21 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Roboto:wght@300;400;500;700&display=swap');
 @import "tailwindcss";
+
+@layer base {
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        font-family: 'Montserrat', sans-serif;
+    }
+
+    body {
+        font-family: 'Roboto', sans-serif;
+    }
+}
 
 .mask-gradient {
     mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);

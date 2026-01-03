@@ -36,15 +36,7 @@ const Dashboard = () => {
             path: '/bill-simplifier',
             status: 'Active'
         },
-        {
-            id: 'necessity-detector',
-            title: 'Necessity Detector',
-            description: 'Scan clinical notes to find missing "medical necessity" language that causes denials.',
-            icon: <Stethoscope className="w-8 h-8 text-pink-600" />,
-            color: 'pink',
-            path: '/necessity-detector',
-            status: 'Beta'
-        },
+        
         {
             id: 'policy-trigger',
             title: 'Denial & Policy Review',
@@ -53,6 +45,15 @@ const Dashboard = () => {
             color: 'indigo',
             path: '/policy-trigger',
             status: 'Active'
+        },
+        {
+            id: 'necessity-detector',
+            title: 'Necessity Detector',
+            description: 'Scan clinical notes to find missing "medical necessity" language that causes denials.',
+            icon: <Stethoscope className="w-8 h-8 text-pink-600" />,
+            color: 'pink',
+            path: '/necessity-detector',
+            status: 'Beta'
         },
         {
             id: 'cost-meter',
