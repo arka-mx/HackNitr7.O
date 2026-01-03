@@ -49,10 +49,10 @@ const Dashboard = () => {
             id: 'policy-trigger',
             title: 'Denial & Policy Review',
             description: 'Analyze rejection letters against your policy to find "bad faith" denials.',
-            icon: <BookOpenCheck className="w-8 h-8 text-indigo-600" />,
+            icon: <BookOpenCheck className="w-8 h-8 text-teal-600" />,
             color: 'indigo',
             path: '/policy-trigger',
-            status: 'Live'
+            status: 'Active'
         },
         {
             id: 'cost-meter',
