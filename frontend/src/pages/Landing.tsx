@@ -111,18 +111,20 @@ export default function Landing() {
                                     key={item}
                                     onClick={(e) => scrollToSection(id, e)}
                                     className={`
-                                        relative px-5 py-2 rounded-full text-sm font-semibold transition-colors duration-300 z-10
+                                        relative px-5 py-2 rounded-full text-sm font-semibold transition-colors duration-300
                                         ${isActive ? 'text-teal-700' : 'text-slate-500 hover:text-slate-800'}
                                     `}
+                                    style={{ WebkitTapHighlightColor: 'transparent' }}
                                 >
                                     {isActive && (
                                         <motion.div
                                             layoutId="active-pill"
-                                            className="absolute inset-0 bg-white rounded-full shadow-sm -z-10"
+                                            className="absolute inset-0 bg-white rounded-full shadow-sm"
+                                            style={{ zIndex: 0 }}
                                             transition={{ type: "spring", stiffness: 300, damping: 30 }}
                                         />
                                     )}
-                                    {item}
+                                    <span className="relative z-10">{item}</span>
                                 </button>
                             );
                         })}
