@@ -20,7 +20,7 @@ const Dashboard = () => {
     const models = [
         {
             id: 'bill-check',
-            title: 'Medical Bill Check',
+            title: 'Bill Check & Audit',
             description: 'AI-powered analysis to find errors and overcharges in your hospital bills.',
             icon: <FileText className="w-8 h-8 text-teal-600" />,
             color: 'teal',
@@ -47,12 +47,12 @@ const Dashboard = () => {
         },
         {
             id: 'policy-trigger',
-            title: 'Policy Clause Identifier',
-            description: 'Identify the exact fine print in your insurance policy that triggered a denial.',
+            title: 'Denial & Policy Review',
+            description: 'Analyze rejection letters against your policy to find "bad faith" denials.',
             icon: <BookOpenCheck className="w-8 h-8 text-indigo-600" />,
             color: 'indigo',
             path: '/policy-trigger',
-            status: 'Coming Soon'
+            status: 'Live'
         },
         {
             id: 'cost-meter',
@@ -65,7 +65,7 @@ const Dashboard = () => {
         }
     ];
 
-    const stats = null; // Removed unused stats array
+
 
     return (
         <div className="min-h-screen bg-[#FDFDFD] font-sans text-slate-800">
