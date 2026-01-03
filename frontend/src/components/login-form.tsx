@@ -152,7 +152,7 @@ export function LoginForm({
       <div className="hidden bg-muted lg:block">
         {/* Blank black image for demo purposes */}
         <img
-          src="https://wallpapershome.com/images/pages/pic_h/26426.jpg"
+          src="./unnamed.jpg"
           alt="Background"
           className="h-full w-full object-cover"
         />

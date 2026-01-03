@@ -7,11 +7,23 @@ import { useAuth } from "@/context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 
+interface AnalysisData {
+    summary: {
+        total_billed: string;
+        insurance_paid: string;
+        patient_responsibility: string;
+        potential_savings: string;
+        status: string;
+    };
+    quick_take: string;
+    detailed_report: string;
+}
+
 const Dashboard = () => {
     const [hospitalBill, setHospitalBill] = useState<File | null>(null);
     const [insurancePolicy, setInsurancePolicy] = useState<File | null>(null);
     const [isAnalyzing, setIsAnalyzing] = useState(false);
-    const [analysisResult, setAnalysisResult] = useState<string | null>(null);
+    const [analysisResult, setAnalysisResult] = useState<AnalysisData | null>(null);
     const [error, setError] = useState<string | null>(null);
 
     const { logout, currentUser } = useAuth();
@@ -178,26 +190,64 @@ const Dashboard = () => {
                     )}
 
                     {analysisResult && (
-                        <motion.div
-                            initial={{ opacity: 0, y: 40 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            className="bg-white border border-slate-200 rounded-2xl p-8 shadow-xl"
-                        >
-                            <div className="flex items-center gap-4 mb-6 border-b border-slate-100 pb-4">
-                                <div className="p-3 bg-teal-50 rounded-lg">
-                                    <CheckCircle className="w-6 h-6 text-teal-600" />
+                        <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+                            {/* Executive Summary Cards */}
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                                <SummaryCard
+                                    label="Total Billed"
+                                    value={analysisResult.summary.total_billed}
+                                    icon="📄"
+                                    subtext="Per Invoice"
+                                />
+                                <SummaryCard
+                                    label="Insurance Paid"
+                                    value={analysisResult.summary.insurance_paid}
+                                    icon="🛡️"
+                                    subtext="Verified/Est."
+                                />
+                                <SummaryCard
+                                    label="Your Responsibility"
+                                    value={analysisResult.summary.patient_responsibility}
+                                    icon="👤"
+                                    subtext="Current Due"
+                                    highlight="orange"
+                                />
+                                <SummaryCard
+                                    label="Potential Savings"
+                                    value={analysisResult.summary.potential_savings}
+                                    icon="💰"
+                                    subtext="Identified"
+                                    highlight="green"
+                                />
+                            </div>
+
+                            {/* Quick Take */}
+                            <div className="bg-teal-50 border border-teal-100 p-4 rounded-xl text-teal-900 flex items-start gap-3">
+                                <span className="text-xl">💡</span>
+                                <p className="font-medium text-lg">{analysisResult.quick_take}</p>
+                            </div>
+
+                            {/* Detailed Report */}
+                            <motion.div
+                                initial={{ opacity: 0, y: 40 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                className="bg-white border border-slate-200 rounded-2xl p-8 shadow-xl"
+                            >
+                                <div className="flex items-center gap-4 mb-6 border-b border-slate-100 pb-4">
+                                    <div className="p-3 bg-teal-50 rounded-lg">
+                                        <CheckCircle className="w-6 h-6 text-teal-600" />
+                                    </div>
+                                    <h2 className="text-2xl font-bold text-slate-900">Detailed Analysis</h2>
                                 </div>
-                                <h2 className="text-2xl font-bold text-slate-900">Analysis Report</h2>
-                            </div>
-                            <div className="prose prose-slate max-w-none">
-                                <ReactMarkdown
-                                    remarkPlugins={[remarkGfm]}
-                                    // className="prose prose-slate max-w-none prose-headings:text-slate-900 prose-p:text-slate-700 prose-strong:text-slate-900 prose-ul:text-slate-700 prose-ol:text-slate-700"
-                                >
-                                    {analysisResult}
-                                </ReactMarkdown>
-                            </div>
-                        </motion.div>
+                                <div className="prose prose-slate max-w-none">
+                                    <ReactMarkdown
+                                        remarkPlugins={[remarkGfm]}
+                                    >
+                                        {analysisResult.detailed_report}
+                                    </ReactMarkdown>
+                                </div>
+                            </motion.div>
+                        </div>
                     )}
                 </AnimatePresence>
             </div>
@@ -250,6 +300,33 @@ const UploadCard = ({ title, description, file, onChange, accept, icon, activeCo
             </div>
         </div>
     </motion.div>
+);
+
+const SummaryCard = ({ label, value, icon, subtext, highlight }: {
+    label: string,
+    value: string,
+    icon: string,
+    subtext: string,
+    highlight?: 'green' | 'orange'
+}) => (
+    <div className={`p-6 rounded-2xl border transition-all hover:shadow-md ${highlight === 'green' ? 'bg-green-50 border-green-200' :
+        highlight === 'orange' ? 'bg-orange-50 border-orange-200' :
+            'bg-white border-slate-200'
+        }`}>
+        <div className="flex justify-between items-start mb-2">
+            <span className="text-slate-500 font-medium text-sm">{label}</span>
+            <span className="text-2xl">{icon}</span>
+        </div>
+        <div className={`text-2xl font-bold mb-1 ${highlight === 'green' ? 'text-green-700' :
+            highlight === 'orange' ? 'text-orange-700' :
+                'text-slate-900'
+            }`}>
+            {value}
+        </div>
+        <div className="text-xs text-slate-400 font-medium uppercase tracking-wide">
+            {subtext}
+        </div>
+    </div>
 );
 
 export default Dashboard;
