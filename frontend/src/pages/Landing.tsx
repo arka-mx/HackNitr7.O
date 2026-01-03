@@ -4,9 +4,11 @@ import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import Footer from "@/components/Footer";
 import LogoTicker from "@/components/LogoTicker";
+import InsuranceTypes from "@/components/InsuranceTypes";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Check, Brain, FileSearch, TrendingDown } from "lucide-react";
+import { motion } from "framer-motion";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -20,7 +22,7 @@ export default function Landing() {
     // Scroll Spy & Sticky Header
     useEffect(() => {
         const handleScroll = () => {
-            const sections = ['home', 'how-it-works', 'pricing'];
+            const sections = ['home', 'coverage', 'how-it-works', 'pricing'];
             const scrollPosition = window.scrollY + 100;
 
             for (const section of sections) {
@@ -100,24 +102,28 @@ export default function Landing() {
                         <img src="/logo.jpg" alt="Overbilled Logo" className="h-10 w-auto" />
                     </div>
 
-                    <nav className="hidden md:flex items-center gap-2 bg-slate-100/50 p-1.5 rounded-full backdrop-blur-sm border border-slate-200/50">
-                        {['Home', 'How It Works', 'Pricing'].map((item) => {
+                    <nav className="hidden md:flex items-center gap-1 bg-slate-100/50 p-1 rounded-full backdrop-blur-sm border border-slate-200/50 relative z-0">
+                        {['Home', 'Coverage', 'How It Works', 'Pricing'].map((item) => {
                             const id = item.toLowerCase().replace(/\s+/g, '-');
                             const isActive = activeSection === id;
                             return (
-                                <a
+                                <button
                                     key={item}
-                                    href={`#${id}`}
                                     onClick={(e) => scrollToSection(id, e)}
                                     className={`
-                                        px-5 py-2 rounded-full text-sm font-semibold transition-all duration-300
-                                        ${isActive
-                                            ? 'bg-white text-teal-700 shadow-sm'
-                                            : 'text-slate-500 hover:text-slate-800 hover:bg-slate-200/50'}
+                                        relative px-5 py-2 rounded-full text-sm font-semibold transition-colors duration-300 z-10
+                                        ${isActive ? 'text-teal-700' : 'text-slate-500 hover:text-slate-800'}
                                     `}
                                 >
+                                    {isActive && (
+                                        <motion.div
+                                            layoutId="active-pill"
+                                            className="absolute inset-0 bg-white rounded-full shadow-sm -z-10"
+                                            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                                        />
+                                    )}
                                     {item}
-                                </a>
+                                </button>
                             );
                         })}
                     </nav>
@@ -165,12 +171,7 @@ export default function Landing() {
                                     >
                                         Analyze My Bill
                                     </Button>
-                                    <Button
-                                        variant="outline"
-                                        className="rounded-full h-14 px-8 text-lg border-2 border-slate-200 hover:bg-slate-50 text-slate-600 font-semibold"
-                                    >
-                                        See Demo
-                                    </Button>
+
                                 </div>
 
                                 <div className="mt-12 flex items-center gap-4">
@@ -193,41 +194,20 @@ export default function Landing() {
                         <div className="lg:col-span-5 flex flex-col gap-6">
                             <div className="bg-slate-900 rounded-[2.5rem] overflow-hidden relative h-[500px] group shadow-2xl">
                                 <img
-                                    src="https://img.freepik.com/free-photo/portrait-successful-mid-adult-doctor-with-crossed-arms_1262-12865.jpg"
-                                    alt="Doctor"
-                                    className="w-full h-full object-cover opacity-80 group-hover:opacity-90 group-hover:scale-105 transition-all duration-1000"
+                                    src="/hero_patient.png"
+                                    alt="Happy Patient"
+                                    className="w-full h-full object-cover opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-1000"
                                 />
-
-                                {/* Floating UI Card */}
-                                <div className="absolute top-8 right-8 bg-white/10 backdrop-blur-xl rounded-2xl p-4 text-white border border-white/20 w-56 shadow-2xl animate-in fade-in slide-in-from-top-4 duration-1000">
-                                    <div className="flex gap-3 mb-4 items-center border-b border-white/10 pb-3">
-                                        <div className="h-8 w-8 rounded-full bg-green-500/20 flex items-center justify-center text-green-400">
-                                            <Check size={16} strokeWidth={3} />
+                                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/40 to-transparent">
+                                    <div className="absolute bottom-8 left-8 right-8">
+                                        <div className="flex items-center gap-2 mb-3">
+                                            <div className="flex text-yellow-500">★★★★★</div>
+                                            <span className="text-white/60 text-sm font-medium">Verified User</span>
                                         </div>
-                                        <div>
-                                            <div className="text-xs text-white/60">Status</div>
-                                            <div className="font-semibold text-sm">Claim Approved</div>
-                                        </div>
+                                        <p className="text-white text-xl font-bold leading-relaxed">
+                                            "I saved $3,000 using this web service."
+                                        </p>
                                     </div>
-                                    <div className="space-y-2">
-                                        <div className="flex justify-between text-xs">
-                                            <span className="text-white/60">Billed</span>
-                                            <span className="line-through text-white/40">$12,000</span>
-                                        </div>
-                                        <div className="flex justify-between text-sm font-bold">
-                                            <span>Saved</span>
-                                            <span className="text-green-400">$3,450</span>
-                                        </div>
-                                        <div className="w-full bg-white/10 h-1.5 rounded-full mt-2 overflow-hidden">
-                                            <div className="w-3/4 bg-green-400 h-full rounded-full"></div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="absolute bottom-8 left-8 right-8">
-                                    <p className="text-white/80 text-lg font-medium italic">
-                                        "I saved over $3,000 on my surgery bill just by uploading it."
-                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -236,6 +216,9 @@ export default function Landing() {
 
                 {/* Insurance Partners Carousel */}
                 <LogoTicker />
+
+                {/* Insurance Types Animation Section */}
+                <InsuranceTypes />
 
                 {/* How It Works Section */}
                 <section id="how-it-works" ref={howItWorksRef} className="container mx-auto px-4 md:px-6 py-20 bg-white">

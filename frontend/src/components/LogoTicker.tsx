@@ -42,33 +42,36 @@ export default function LogoTicker() {
     }, []);
 
     return (
-        <div className="py-8 bg-slate-50 border-y border-slate-100 overflow-hidden">
-            <div className="container mx-auto px-4 mb-4 text-center">
-                <p className="text-sm font-semibold text-slate-500 uppercase tracking-wider"></p>
+        <div className="py-12 bg-slate-50 border-y border-slate-100 overflow-hidden">
+            <div className="container mx-auto px-4 mb-8 text-center">
+                <p className="text-sm font-bold text-slate-400 uppercase tracking-widest">Trusted By Policyholders From</p>
             </div>
-            <div className="flex overflow-hidden relative w-full mask-gradient">
-                {/* Wrapper for smooth scrolling */}
-                <div ref={tickerRef} className="flex gap-12 whitespace-nowrap px-4 items-center w-max">
-                    {/* First Loop */}
-                    {partners.map((partner, index) => (
-                        <div key={`p1-${index}`} className="flex items-center gap-3 opacity-60 hover:opacity-100 transition-opacity grayscale hover:grayscale-0">
-                            <div className="w-8 h-8 rounded-full bg-white border border-slate-200 p-1.5 flex items-center justify-center">
-                                {/* Use generated generic icons, rotated for variety if needed, but here just mapping */}
-                                <img src={partner.icon} alt="" className="w-full h-full object-contain" />
-                            </div>
-                            <span className="font-semibold text-slate-700 text-lg">{partner.name}</span>
-                        </div>
-                    ))}
 
-                    {/* Second Loop for Infinite Effect */}
-                    {partners.map((partner, index) => (
-                        <div key={`p2-${index}`} className="flex items-center gap-3 opacity-60 hover:opacity-100 transition-opacity grayscale hover:grayscale-0">
-                            <div className="w-8 h-8 rounded-full bg-white border border-slate-200 p-1.5 flex items-center justify-center">
-                                <img src={partner.icon} alt="" className="w-full h-full object-contain" />
+            {/* Carousel Container with Margins */}
+            <div className="max-w-7xl mx-auto px-4 md:px-12 relative">
+                <div className="flex overflow-hidden relative w-full mask-gradient">
+                    {/* Wrapper for smooth scrolling */}
+                    <div ref={tickerRef} className="flex gap-16 whitespace-nowrap px-4 items-center w-max">
+                        {/* First Loop */}
+                        {partners.map((partner, index) => (
+                            <div key={`p1-${index}`} className="flex flex-col items-center gap-4 mx-4 opacity-60 hover:opacity-100 transition-all grayscale hover:grayscale-0 cursor-pointer group">
+                                <div className="w-20 h-20 rounded-2xl bg-white border border-slate-200 p-5 flex items-center justify-center shadow-sm group-hover:shadow-md transition-all group-hover:-translate-y-1">
+                                    <img src={partner.icon} alt="" className="w-full h-full object-contain" />
+                                </div>
+                                <span className="font-semibold text-slate-600 group-hover:text-slate-900 text-sm text-center tracking-tight transition-colors">{partner.name}</span>
                             </div>
-                            <span className="font-semibold text-slate-700 text-lg">{partner.name}</span>
-                        </div>
-                    ))}
+                        ))}
+
+                        {/* Second Loop for Infinite Effect */}
+                        {partners.map((partner, index) => (
+                            <div key={`p2-${index}`} className="flex flex-col items-center gap-4 mx-4 opacity-60 hover:opacity-100 transition-all grayscale hover:grayscale-0 cursor-pointer group">
+                                <div className="w-20 h-20 rounded-2xl bg-white border border-slate-200 p-5 flex items-center justify-center shadow-sm group-hover:shadow-md transition-all group-hover:-translate-y-1">
+                                    <img src={partner.icon} alt="" className="w-full h-full object-contain" />
+                                </div>
+                                <span className="font-semibold text-slate-600 group-hover:text-slate-900 text-sm text-center tracking-tight transition-colors">{partner.name}</span>
+                            </div>
+                        ))}
+                    </div>
                 </div>
             </div>
         </div>
