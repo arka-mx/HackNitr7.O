@@ -4,6 +4,10 @@ import { SignupForm } from "@/components/signup-form"
 import Landing from "@/pages/Landing"
 import Dashboard from "@/pages/Dashboard"
 import BillCheck from "@/pages/BillCheck"
+import BillSimplifier from "@/pages/BillSimplifier"
+import NecessityDetector from "@/pages/NecessityDetector"
+import PolicyTrigger from "@/pages/PolicyTrigger"
+import CostMeter from "@/pages/CostMeter"
 import NotFound from "@/pages/NotFound"
 import { AuthProvider } from "@/context/AuthContext"
 import ProtectedRoute from "@/components/ProtectedRoute"
@@ -36,6 +40,26 @@ function App() {
           <Route path="/bill-check" element={
             <ProtectedRoute>
               <BillCheck />
+            </ProtectedRoute>
+          } />
+          <Route path="/bill-simplifier" element={
+            <ProtectedRoute>
+              <BillSimplifier />
+            </ProtectedRoute>
+          } />
+          <Route path="/necessity-detector" element={
+            <ProtectedRoute>
+              <NecessityDetector />
+            </ProtectedRoute>
+          } />
+          <Route path="/policy-trigger" element={
+            <ProtectedRoute>
+              <PolicyTrigger />
+            </ProtectedRoute>
+          } />
+          <Route path="/cost-meter" element={
+            <ProtectedRoute>
+              <CostMeter />
             </ProtectedRoute>
           } />
           <Route path="*" element={<NotFound />} />
