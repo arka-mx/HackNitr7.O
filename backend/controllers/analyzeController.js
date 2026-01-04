@@ -32,20 +32,32 @@ The JSON structure must be exactly as follows:
 1. **summary**: Fill these fields with the best estimated numbers found or calculated. If a number is not found, use "$0.00" or "N/A".
 2. **detailed_report**: This string will be rendered as Markdown. It should contain the full explanation, itemized errors, and next steps. Do NOT include the financial summary table in this markdown string, as it will be displayed separately.
 3. **Strict JSON**: Your entire response must be parseable JSON. Do not add conversational text outside the JSON block.
+4. **Dont use emojis**
 `;
 
 const extractText = async (file) => {
     if (file.mimetype === 'application/pdf') {
         try {
+            console.log(`[extractText] Parsing PDF: ${file.originalname}, Buffer Size: ${file.buffer.length} bytes`);
+
+            // Usage matching BillSimplifier (simplifyController.js)
             const dataBuffer = file.buffer;
-            // Convert Buffer to Uint8Array as required by PDFParse class
             const uint8Array = new Uint8Array(dataBuffer);
+            // @ts-ignore - handling specific library version quirk
             const parser = new pdf.PDFParse(uint8Array);
             const data = await parser.getText();
+
+            console.log(`[extractText] PDF Parsed. Pages: ${data.numpages}, Text Length: ${data.text ? data.text.length : 0}`);
+
+            if (!data.text || data.text.trim().length === 0) {
+                return "[WARNING: No text information found in this PDF. It appears to be an image scan without OCR.]";
+            }
+
             return data.text;
         } catch (error) {
-            console.error("Error parsing PDF:", error);
-            throw new Error(`Failed to parse PDF: ${file.originalname}`);
+            console.error("[extractText] Critical Error parsing PDF:", error);
+            // If pdf-parse fails, return a safe error string instead of crashing the whole request
+            return `[ERROR: Failed to parse PDF ${file.originalname}. File might be corrupted or encrypted.]`;
         }
     } else if (file.mimetype.startsWith('text/')) {
         return file.buffer.toString('utf8');
@@ -291,6 +303,145 @@ export const analyzePolicyCheck = async (req, res) => {
 
     } catch (error) {
         console.error("Error in policy check:", error);
+        res.status(500).json({ message: 'Error analyzing documents', error: error.message });
+    }
+};
+
+const NECESSITY_CHECK_PROMPT = `
+Role: Clinical Prescription Auditor Agent
+
+Your goal is to audit a clinical SOAP note (or similar documentation) to validate the appropriateness of the prescribed medications against the documented symptoms and diagnoses.
+
+**CRITICAL DATA EXTRACTION NOTICE**:
+The input text is raw extraction from a PDF. It may contain:
+- **Interleaved Text**: Lines from different columns might be mixed (e.g., "BP 120/80   Amoxicillin 500mg").
+- **OCR Errors**: Typos or missing spaces.
+- **Unstructured Headers**: Headers like "Plan", "Rx", "Assessment" might be inline.
+
+**YOU MUST**:
+1. **Reconstruct the Context**: Look for section headers (Plan, Rx, Assessment, Subjective, Objective) to group related information.
+2. **Extract Symptoms**: Identify symptoms/diagnoses from the "Subjective", "HPI", or "Assessment" sections.
+3. **Extract Medications**: Identify drugs from the "Plan", "Rx", "Medications", or "Treatment" sections.
+4. **Link Them**: Use your medical knowledge to check if *any* extracted symptom justifies *any* extracted medication, even if they appear far apart in the text.
+
+Objective:
+Identify if the prescribed medicines are **Necessary**, **Extra/Excessive**, or if there are **Missing** treatments for significant symptoms.
+
+Instructions:
+1.  **Extract Symptoms & Diagnoses**: List all clear symptoms and diagnosed conditions.
+2.  **Extract Prescribed Medications**: List all medications ordered.
+3.  **Cross-Reference**:
+    *   For each medication, check if there is a documented symptom or diagnosis that warrants it.
+    *   For each major symptom, check if there is a corresponding treatment.
+4.  **Categorize**:
+    *   **Necessary**: Medication clearly aligns with a documented condition/symptom.
+    *   **Extra / Potentially Unnecessary**: Medication has NO clear supporting symptom/diagnosis in the text.
+    *   **Missing / Consider Adding**: A significant symptom is documented but no treatment is listed.
+
+Output Format (STRICT JSON):
+{
+  "summary": "Professional summary of the prescription audit.",
+  "symptoms_identified": ["Symptom 1", "Symptom 2"],
+  "medication_audit": {
+    "necessary": [
+      { "name": "Med Name", "reason": "Treats [Symptom]" }
+    ],
+    "extra": [
+      { "name": "Med Name", "reason": "No matching symptom found in note" }
+    ],
+    "missing": [
+      { "condition": "Condition/Symptom", "suggestion": "Consider [Drug Class/Name]" }
+    ]
+  },
+  "doctor_feedback": [
+    "Specific actionable tip for the doctor regarding the prescription."
+  ],
+  "disclaimer": "This is an AI audit based solely on the text provided. Clinical judgement supersedes this analysis."
+}
+`;
+
+export const analyzeNecessityCheck = async (req, res) => {
+    try {
+        const files = req.files;
+        const clinicalNotes = files['clinicalNotes'] || [];
+
+        if (clinicalNotes.length === 0) {
+            return res.status(400).json({ message: 'At least one Clinical Note document is required.' });
+        }
+
+        let combinedText = "USER UPLOADED CLINICAL NOTES FOR PRESCRIPTION AUDIT:\n\n";
+
+        // Extract Clinical Notes
+        for (const doc of clinicalNotes) {
+            const text = await extractText(doc);
+            combinedText += `--- CLINICAL NOTE (${doc.originalname}) ---\n${text}\n\n`;
+        }
+
+        // DEBUG: Print first 1000 chars to check extraction quality
+        console.log("--- DEBUG EXTRACTED TEXT (First 1000 chars) ---");
+        console.log(combinedText.substring(0, 1000));
+        console.log("-----------------------------------------------");
+
+        const perplexityApiKey = process.env.PERPLEXITY_API_KEY;
+        if (!perplexityApiKey) {
+            // Mock Response for dev without API key
+            return res.status(200).json({
+                analysis: {
+                    summary: "The prescription generally aligns with the diagnosis of Acute Bronchitis, but there is a potential unnecessary antibiotic prescribed given the viral presentation.",
+                    symptoms_identified: ["Cough", "Mild Fever", "Sore Throat"],
+                    medication_audit: {
+                        necessary: [
+                            { name: "Acetaminophen", reason: "Treats fever and throat pain" },
+                            { name: "Dextromethorphan", reason: "Symptomatic relief for cough" }
+                        ],
+                        extra: [
+                            { name: "Azithromycin", reason: "No evidence of bacterial infection documented; likely viral based on history." }
+                        ],
+                        missing: [
+                            { condition: "Dehydration risk", suggestion: "Consider documenting fluid intake advice or hydration salts." }
+                        ]
+                    },
+                    doctor_feedback: [
+                        "Review indication for Azithromycin; guidelines suggest withholding antibiotics for uncomplicated viral bronchitis.",
+                        "Document specific lung exam findings to justify antibiotic use if bacterial etiology is suspected."
+                    ],
+                    disclaimer: "Mock Data: AI audit based on text."
+                }
+            });
+        }
+
+        const response = await axios.post('https://api.perplexity.ai/chat/completions', {
+            model: 'sonar-pro',
+            messages: [
+                { role: 'system', content: NECESSITY_CHECK_PROMPT + "\n\nIMPORTANT: OUTPUT RAW JSON ONLY. NO PREAMBLE. NO MARKDOWN BLOCK." },
+                { role: 'user', content: combinedText }
+            ]
+        }, {
+            headers: {
+                'Authorization': `Bearer ${perplexityApiKey} `,
+                'Content-Type': 'application/json'
+            }
+        });
+
+        let analysisData;
+        try {
+            const content = response.data.choices[0].message.content;
+            analysisData = extractJson(content);
+        } catch (e) {
+            console.error("Failed to parse AI JSON response:", e);
+            analysisData = {
+                summary: "Error parsing analysis results.",
+                symptoms_identified: [],
+                medication_audit: { necessary: [], extra: [], missing: [] },
+                doctor_feedback: ["Please try again."],
+                disclaimer: "System error."
+            };
+        }
+
+        res.json({ analysis: analysisData });
+
+    } catch (error) {
+        console.error("Error in necessity check:", error);
         res.status(500).json({ message: 'Error analyzing documents', error: error.message });
     }
 };

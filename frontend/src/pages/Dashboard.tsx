@@ -34,7 +34,17 @@ const Dashboard = () => {
             icon: <Wand2 className="w-8 h-8 text-blue-600" />,
             color: 'blue',
             path: '/bill-simplifier',
-            status: 'Beta'
+            status: 'Active'
+        },
+
+        {
+            id: 'policy-trigger',
+            title: 'Denial & Policy Review',
+            description: 'Analyze rejection letters against your policy to find "bad faith" denials.',
+            icon: <BookOpenCheck className="w-8 h-8 text-indigo-600" />,
+            color: 'indigo',
+            path: '/policy-trigger',
+            status: 'Active'
         },
         {
             id: 'necessity-detector',
@@ -43,15 +53,6 @@ const Dashboard = () => {
             icon: <Stethoscope className="w-8 h-8 text-pink-600" />,
             color: 'pink',
             path: '/necessity-detector',
-            status: 'Beta'
-        },
-        {
-            id: 'policy-trigger',
-            title: 'Denial & Policy Review',
-            description: 'Analyze rejection letters against your policy to find "bad faith" denials.',
-            icon: <BookOpenCheck className="w-8 h-8 text-teal-600" />,
-            color: 'indigo',
-            path: '/policy-trigger',
             status: 'Active'
         },
         {

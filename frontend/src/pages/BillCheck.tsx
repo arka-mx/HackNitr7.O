@@ -1,7 +1,7 @@
 import { useState, useMemo } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import { FileText, CheckCircle, AlertCircle, Loader2, LogOut, TrendingUp, ShieldCheck, User, PiggyBank, PieChart, ArrowLeft } from 'lucide-react';
+import { FileText, CheckCircle, AlertCircle, Loader2, LogOut, TrendingUp, ShieldCheck, User, PiggyBank, PieChart, ArrowLeft, Scale, ArrowRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from "@/context/AuthContext";
 import { useNavigate } from "react-router-dom";
@@ -62,7 +62,7 @@ const BillCheck = () => {
         }
 
         try {
-            const response = await fetch('http://localhost:5000/api/analyze/upload', {
+            const response = await fetch('http://localhost:5000/api/analyze/analyze', {
                 method: 'POST',
                 body: formData,
             });
@@ -230,7 +230,7 @@ const BillCheck = () => {
                                 <Button
                                     onClick={() => navigate('/policy-trigger')}
                                     size="sm"
-                                    className="bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg shadow-sm"
+                                    className="bg-red-600 hover:bg-orange-700 text-white rounded-lg shadow-sm"
                                 >
                                     Check Denial <ArrowRight className="w-4 h-4 ml-1" />
                                 </Button>
@@ -491,8 +491,8 @@ const UploadCard = ({ title, description, file, onChange, accept, icon, activeCo
                     accept={accept}
                     className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
                 />
-                <div className={`
-                    py-3 px-4 rounded-xl font-medium text-sm transition-colors border max-w-[200px] mx-auto
+                <div className={`overflow-hidden
+                    py-3 rounded-xl font-medium text-sm transition-colors border max-w-[200px] mx-auto
                     ${file
                         ? `bg-white text-${activeColor}-700 border-${activeColor}-200 shadow-sm`
                         : 'bg-white text-slate-600 border-slate-200 group-hover:bg-slate-50'}
