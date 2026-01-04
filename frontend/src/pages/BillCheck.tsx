@@ -110,7 +110,7 @@ const BillCheck = () => {
     return (
         <div className="min-h-screen bg-[#FDFDFD] font-sans text-slate-800 selection:bg-teal-100">
             {/* Top Navigation */}
-            <nav className="bg-white border-b border-slate-100 sticky top-0 z-50">
+            <nav className="bg-[#F0F5F3] border-b border-slate-100 sticky top-0 z-50">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between h-16">
                         <div className="flex items-center gap-3 cursor-pointer" onClick={() => navigate('/dashboard')}>

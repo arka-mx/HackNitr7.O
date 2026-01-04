@@ -63,13 +63,12 @@ export default function Landing() {
                     {
                         opacity: 1,
                         x: 0,
-                        duration: 1,
-                        ease: "power3.out",
+                        duration: 2.6,
                         scrollTrigger: {
                             trigger: card,
-                            start: "top 80%",
-                            end: "top 50%",
-                            scrub: 1,
+                            start: "top 95%", // Start almost immediately when entering viewport
+                            end: "bottom 15%", // Spread over a much longer distance
+                            scrub: 2.7,          // Maximum smoothness/inertia
                         }
                     }
                 );
@@ -95,7 +94,7 @@ export default function Landing() {
             {/* Sticky Header */}
             <header
                 ref={headerRef}
-                className="sticky top-0 z-50 transition-all duration-300 py-4 px-4 md:px-6 backdrop-blur-md bg-[#FDFDFD]"
+                className="sticky top-0 z-50 transition-all duration-300 py-4 px-4 md:px-6 backdrop-blur-md bg-[#F0F5F3]"
             >
                 <div className="container mx-auto flex items-center justify-between">
                     <div className="flex items-center gap-2 cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
