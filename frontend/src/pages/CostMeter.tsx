@@ -1,7 +1,6 @@
 import { useState } from 'react';
-import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
-import { Upload, FileText, AlertCircle, Loader2, ArrowLeft, TrendingDown, DollarSign, Clock, ShieldAlert } from 'lucide-react';
+
+import { FileText, AlertCircle, Loader2, ArrowLeft, TrendingDown, DollarSign, Clock, ShieldAlert } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from "@/context/AuthContext";
 import { useNavigate } from "react-router-dom";
@@ -15,17 +14,10 @@ const CostMeter = () => {
     const [analysisResult, setAnalysisResult] = useState<any | null>(null);
     const [error, setError] = useState<string | null>(null);
 
-    const { logout, currentUser } = useAuth();
+    const { currentUser } = useAuth();
     const navigate = useNavigate();
 
-    const handleLogout = async () => {
-        try {
-            navigate("/landing");
-            await logout();
-        } catch (error) {
-            console.error("Error signing out:", error);
-        }
-    };
+
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, type: 'bill' | 'policy') => {
         if (e.target.files && e.target.files[0]) {
@@ -50,7 +42,7 @@ const CostMeter = () => {
         formData.append('annualIncome', annualIncome);
 
         try {
-            const response = await fetch('http://localhost:5000/api/analyze/cost-analysis', {
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/analyze/cost-analysis`, {
                 method: 'POST',
                 body: formData,
             });
