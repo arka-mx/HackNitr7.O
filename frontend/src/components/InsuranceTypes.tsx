@@ -39,16 +39,16 @@ export default function InsuranceTypes() {
                         height: "auto",
                         minHeight: "100px",
                         opacity: 1,
-                        borderRadius: "0px", // End as Square (Sharp corners)
+                        borderRadius: "16px", // Soft rounded corners instead of sharp 0px
                         x: 0,
-                        duration: 1,
-                        ease: "power2.out",
+                        duration: 1.5,
+                        ease: "power3.out", // Smoother easing
                         scrollTrigger: {
                             trigger: card,
-                            start: "top 85%", // Start animating when top of card hits 85% viewport height
-                            end: "top 65%",   // Finish when it's higher up
-                            scrub: 1,         // Smooth scrubbing
-                            toggleActions: "play reverse play reverse" // Reversible
+                            start: "top 90%", // Start earlier
+                            end: "top 40%",   // End later for longer scroll duration
+                            scrub: 2,         // Increased scrub for smoother catch-up
+                            toggleActions: "play reverse play reverse"
                         }
                     }
                 );
