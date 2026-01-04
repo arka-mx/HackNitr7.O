@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { Upload, CheckCircle2, AlertCircle, Loader2 } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
-import { useAuth } from '@/context/AuthContext';
+
 import BodyMap from '@/components/BodyMap';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -26,7 +26,7 @@ interface SimplifierResult {
 }
 
 export default function BillSimplifier() {
-    const { currentUser } = useAuth();
+
     const [file, setFile] = useState<File | null>(null);
     const [loading, setLoading] = useState(false);
     const [result, setResult] = useState<SimplifierResult | null>(null);
@@ -45,7 +45,7 @@ export default function BillSimplifier() {
         formData.append('hospitalBill', file);
 
         try {
-            const response = await fetch('http://localhost:5000/api/analyze/simplify', {
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/analyze/simplify`, {
                 method: 'POST',
                 body: formData,
             });

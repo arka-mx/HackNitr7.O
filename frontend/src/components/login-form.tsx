@@ -15,12 +15,11 @@ export function LoginForm({
 }: React.ComponentPropsWithoutRef<"form">) {
   const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
   const navigate = useNavigate();
-  const [isLoading, setIsLoading] = React.useState(false);
+
   const { login } = useAuth();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
     setErrorMessage(null);
 
     // Get email and password from form (or state if bound, but here inputs are unchecked)
@@ -34,7 +33,7 @@ export function LoginForm({
     const password = passwordInput.value;
 
     try {
-      const response = await fetch('http://localhost:5000/api/login', {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password })
@@ -52,7 +51,7 @@ export function LoginForm({
       console.error("Login error:", error);
       setErrorMessage("Failed to connect to server");
     } finally {
-      setIsLoading(false);
+
     }
   };
 
@@ -63,7 +62,7 @@ export function LoginForm({
       const user = result.user;
       const token = await user.getIdToken();
 
-      const response = await fetch('http://localhost:5000/api/verify-login', {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/verify-login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

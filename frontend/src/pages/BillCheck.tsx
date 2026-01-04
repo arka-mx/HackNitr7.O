@@ -62,7 +62,7 @@ const BillCheck = () => {
         }
 
         try {
-            const response = await fetch('http://localhost:5000/api/analyze/analyze', {
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/analyze/analyze`, {
                 method: 'POST',
                 body: formData,
             });

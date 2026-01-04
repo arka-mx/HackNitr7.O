@@ -31,7 +31,7 @@ const NecessityDetector = () => {
         clinicalNotes.forEach(doc => formData.append('clinicalNotes', doc));
 
         try {
-            const response = await fetch('http://localhost:5000/api/analyze/necessity-check', {
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/analyze/necessity-check`, {
                 method: 'POST',
                 body: formData,
             });

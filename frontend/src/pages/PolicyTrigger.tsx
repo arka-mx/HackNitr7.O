@@ -36,7 +36,7 @@ const PolicyTrigger = () => {
         denialDocs.forEach(doc => formData.append('denialDocs', doc));
 
         try {
-            const response = await fetch('http://localhost:5000/api/analyze/policy-check', {
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/analyze/policy-check`, {
                 method: 'POST',
                 body: formData,
             });
