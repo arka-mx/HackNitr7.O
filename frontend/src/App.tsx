@@ -1,6 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 import { LoginForm } from "@/components/login-form"
-import { SignupForm } from "@/components/signup-form"
 import Landing from "@/pages/Landing"
 import Dashboard from "@/pages/Dashboard"
 import BillCheck from "@/pages/BillCheck"
