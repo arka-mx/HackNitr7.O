@@ -23,6 +23,10 @@ app.get('/', (req, res) => {
     res.send('Backend is running!');
 });
 
+app.get("/health",(req,res)=>{
+    return res.status(200).json({status:"200 OK"});
+});
+
 app.listen(port, () => {
     console.log(`server live`);
 });
