@@ -1,6 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 import { LoginForm } from "@/components/login-form"
-import { SignupForm } from "@/components/signup-form"
 import Landing from "@/pages/Landing"
 import Dashboard from "@/pages/Dashboard"
 import BillCheck from "@/pages/BillCheck"
@@ -18,18 +17,18 @@ function App() {
     <AuthProvider>
       <Router>
         <Routes>
-          <Route path="/" element={
+          {/* <Route path="/" element={
+            <GuestRoute>
+              <LoginForm />
+            </GuestRoute>
+          } /> */}
+          <Route path="/signup" element={
             <GuestRoute>
               <LoginForm />
             </GuestRoute>
           } />
-          <Route path="/signup" element={
-            <GuestRoute>
-              <SignupForm />
-            </GuestRoute>
-          } />
           <Route
-            path="/landing"
+            path="/"
             element={<Landing />}
           />
           <Route path="/dashboard" element={
