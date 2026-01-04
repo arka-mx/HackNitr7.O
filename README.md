@@ -51,7 +51,7 @@ HackNitr7.O/
 
 1.  **Clone the repository**
     ```bash
-    git clone https://github.com/yourusername/HackNitr7.O.git
+    git clone https://github.com/arka-mx/HackNitr7.O.git
     cd HackNitr7.O
     ```
 
