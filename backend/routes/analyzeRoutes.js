@@ -1,7 +1,6 @@
 import express from 'express';
 import multer from 'multer';
-import { analyzeMedicalData, analyzePolicyCheck } from '../controllers/analyzeController.js';
-import { simplifyBill } from '../controllers/simplifyController.js';
+import { analyzeCost } from '../controllers/costController.js';
 
 const router = express.Router();
 const upload = multer({ storage: multer.memoryStorage() });
@@ -20,5 +19,10 @@ router.post('/policy-check', upload.fields([
     { name: 'medicalDocs', maxCount: 5 },
     { name: 'denialDocs', maxCount: 5 }
 ]), analyzePolicyCheck);
+
+router.post('/cost-analysis', upload.fields([
+    { name: 'hospitalBill', maxCount: 1 },
+    { name: 'policyFile', maxCount: 1 }
+]), analyzeCost);
 
 export default router;
