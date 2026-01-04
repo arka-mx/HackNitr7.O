@@ -51,7 +51,7 @@ export default function Footer() {
                             <li><a href="#" className="hover:text-teal-400 transition-colors">Privacy Policy</a></li>
                             <li><a href="#" className="hover:text-teal-400 transition-colors">Terms of Service</a></li>
                             <li><a href="#" className="hover:text-teal-400 transition-colors">Cookie Policy</a></li>
-                            <li><a href="#" className="hover:text-teal-400 transition-colors">HIPAA Compliance</a></li>
+                            <li><a href="https://www.hhs.gov/hipaa/for-professionals/privacy/laws-regulations/index.html" className="hover:text-teal-400 transition-colors">HIPAA Compliance</a></li>
                         </ul>
                     </div>
                 </div>
