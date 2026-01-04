@@ -18,18 +18,18 @@ function App() {
     <AuthProvider>
       <Router>
         <Routes>
-          <Route path="/" element={
+          {/* <Route path="/" element={
+            <GuestRoute>
+              <LoginForm />
+            </GuestRoute>
+          } /> */}
+          <Route path="/signup" element={
             <GuestRoute>
               <LoginForm />
             </GuestRoute>
           } />
-          <Route path="/signup" element={
-            <GuestRoute>
-              <SignupForm />
-            </GuestRoute>
-          } />
           <Route
-            path="/landing"
+            path="/"
             element={<Landing />}
           />
           <Route path="/dashboard" element={

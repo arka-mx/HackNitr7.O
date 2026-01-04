@@ -135,7 +135,7 @@ export default function Landing() {
                         </span>
                         <Button
                             className="rounded-full bg-teal-700 hover:bg-teal-800 text-white px-6 shadow-lg shadow-teal-700/20 transition-all hover:scale-105"
-                            onClick={() => navigate(currentUser ? '/dashboard' : '/')}
+                            onClick={() => navigate(currentUser ? '/dashboard' : '/signup')}
                         >
                             {currentUser ? 'Dashboard' : 'Get Started'} →
                         </Button>

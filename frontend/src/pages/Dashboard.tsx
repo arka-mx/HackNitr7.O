@@ -10,7 +10,7 @@ const Dashboard = () => {
 
     const handleLogout = async () => {
         try {
-            navigate("/landing");
+            navigate("/");
             await logout();
         } catch (error) {
             console.error("Error signing out:", error);
