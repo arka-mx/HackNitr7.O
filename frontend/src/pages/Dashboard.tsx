@@ -53,7 +53,7 @@ const Dashboard = () => {
             icon: <Stethoscope className="w-8 h-8 text-pink-600" />,
             color: 'pink',
             path: '/necessity-detector',
-            status: 'Beta'
+            status: 'Active'
         },
         {
             id: 'cost-meter',
